@@ -3,6 +3,7 @@ package org.boisvert;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,10 +22,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
      * (custom ViewHolder).
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
-        public ViewHolder(TextView v){
+        public TextView question;
+        public ViewHolder(LinearLayout v){
             super(v);
-            textView = v;
+            question = v.findViewById(R.id.question);
         }
     }
 
@@ -36,7 +37,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        TextView view = (TextView) LayoutInflater.from(viewGroup.getContext())
+        LinearLayout view = (LinearLayout) LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.question_items, viewGroup, false);
 
         return new ViewHolder(view);
@@ -49,7 +50,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         VDQuestion q =list.get(position);
-        viewHolder.textView.setText(q.texte);
+        viewHolder.question.setText(q.texte);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

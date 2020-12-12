@@ -8,10 +8,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.boisvert.Exceptions.MauvaiseQuestion;
+import org.boisvert.Impl.ServiceImpl;
+import org.boisvert.Interfaces.Service;
 import org.boisvert.Modele.VDQuestion;
 import org.boisvert.databinding.ActivityListeBinding;
 
 public class ListeActivity extends AppCompatActivity {
+    Adapter adapter;
+
     private ActivityListeBinding binding;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,7 +30,21 @@ public class ListeActivity extends AppCompatActivity {
 
     private void FillRecycler()
     {
-        
+       try {
+           Service service = new ServiceImpl();
+           VDQuestion question = new VDQuestion();
+           question.texte = "Le quebec est-il un pays?";
+           service.ajoutQuestion(question);
+           adapter.list.add(question);
+           adapter.list.add(question);
+           adapter.list.add(question);
+           adapter.list.add(question);
+           adapter.notifyDataSetChanged();
+       }
+       catch (MauvaiseQuestion e)
+       {
+
+       }
     }
 
     private void startRecyclerView()
@@ -36,7 +55,7 @@ public class ListeActivity extends AppCompatActivity {
         LinearLayoutManager LayoutManager = new LinearLayoutManager(this);
         rec.setLayoutManager(LayoutManager);
 
-        Adapter adp = new Adapter();
-        rec.setAdapter(adp);
+        adapter = new Adapter();
+        rec.setAdapter(adapter);
     }
 }
