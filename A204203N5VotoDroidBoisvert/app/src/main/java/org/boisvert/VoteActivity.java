@@ -49,7 +49,7 @@ public class VoteActivity extends AppCompatActivity
                 }
                 catch (MauvaisVote e)
                 {
-                    Toast.makeText(getApplicationContext(),"Un problème est survenu pendant la création de la vode. Veuiller réessayer plus tard...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Vous pouvez seulement voter une fois par question!", Toast.LENGTH_SHORT).show();
                 }
                 startActivity(i);
             }

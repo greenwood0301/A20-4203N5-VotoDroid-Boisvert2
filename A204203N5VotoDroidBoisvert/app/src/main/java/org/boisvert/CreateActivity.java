@@ -39,7 +39,7 @@ public class CreateActivity extends AppCompatActivity {
                 }
                 catch (MauvaiseQuestion e)
                 {
-                    Toast.makeText(getApplicationContext(),"Un problème est survenu pendant la création de la question. Veuiller réessayer plus tard...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"La question existe déjà!", Toast.LENGTH_SHORT).show();
                 }
                 startActivity(i);
             }
