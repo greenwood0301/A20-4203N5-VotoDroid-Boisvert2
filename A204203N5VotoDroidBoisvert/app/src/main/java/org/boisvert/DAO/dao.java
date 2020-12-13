@@ -1,10 +1,12 @@
 package org.boisvert.DAO;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
 import org.boisvert.Modele.VDQuestion;
+import org.boisvert.Modele.VDVote;
 
 import java.util.List;
 
@@ -12,8 +14,20 @@ import java.util.List;
 public interface dao {
 
     @Insert
-    Integer creerQuestion(VDQuestion question);
+    long creerQuestion(VDQuestion question);
+
+    @Insert
+    long creerVote(VDVote vote);
 
     @Query("SELECT * FROM VDQuestion")
-    List<VDQuestion> ALL();
+    List<VDQuestion> ALLQ();
+
+    @Query("DELETE FROM VDQuestion")
+    void delete();
+
+    @Query("DELETE FROM VDVote")
+    void deleteV();
+
+    @Query("SELECT * FROM VDVote")
+    List<VDVote> ALLV();
 }

@@ -16,20 +16,30 @@ import java.util.List;
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     public List<VDQuestion> list;
+    private isClick click;
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView question;
-        public ViewHolder(LinearLayout v){
+        isClick isClick;
+        public ViewHolder(LinearLayout v, isClick isClick){
             super(v);
             question = v.findViewById(R.id.question);
+            itemView.setOnClickListener(this);
+            this.isClick = isClick;
+        }
+
+        @Override
+        public void onClick(View v) {
+            isClick.onItemClick(getAdapterPosition());
         }
     }
 
-    public Adapter() {
+    public Adapter(isClick aclick) {
+        click = aclick;
         list  = new ArrayList<>();
     }
 
@@ -40,7 +50,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         LinearLayout view = (LinearLayout) LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.question_items, viewGroup, false);
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, click);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -58,4 +68,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public int getItemCount() {
         return list.size();
     }
+
+    public interface isClick
+    {
+        void onItemClick(Integer pos);
+    }
+
 }

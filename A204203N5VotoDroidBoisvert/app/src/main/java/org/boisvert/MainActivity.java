@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import org.boisvert.DAO.BD;
 import org.boisvert.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,12 +18,14 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        BD local = BD.getInstance(this);
 
         binding.addq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this,CreateActivity.class);
-                
+                local.dao().delete();
+                local.dao().deleteV();
                 startActivity(i);
             }
         });

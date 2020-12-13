@@ -1,5 +1,6 @@
 package org.boisvert;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -7,16 +8,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Dao;
 
+import org.boisvert.DAO.BD;
 import org.boisvert.Exceptions.MauvaiseQuestion;
 import org.boisvert.Impl.ServiceImpl;
 import org.boisvert.Interfaces.Service;
 import org.boisvert.Modele.VDQuestion;
 import org.boisvert.databinding.ActivityListeBinding;
+import org.boisvert.databinding.QuestionItemsBinding;
 
-public class ListeActivity extends AppCompatActivity {
+public class ListeActivity extends AppCompatActivity implements Adapter.isClick {
     Adapter adapter;
-
+    BD local;
     private ActivityListeBinding binding;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,27 +28,27 @@ public class ListeActivity extends AppCompatActivity {
         binding = ActivityListeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
         this.startRecyclerView();
         this.FillRecycler();
+
+
+        binding.pose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ListeActivity.this,CreateActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private void FillRecycler()
     {
-       try {
-           Service service = new ServiceImpl();
-           VDQuestion question = new VDQuestion();
-           question.texte = "Le quebec est-il un pays?";
-           service.ajoutQuestion(question);
-           adapter.list.add(question);
-           adapter.list.add(question);
-           adapter.list.add(question);
-           adapter.list.add(question);
-           adapter.notifyDataSetChanged();
-       }
-       catch (MauvaiseQuestion e)
-       {
+       local = BD.getInstance(this);
 
-       }
+        adapter.list.addAll(BD.getInstance(this).dao().ALLQ());
+        adapter.notifyDataSetChanged();
+
     }
 
     private void startRecyclerView()
@@ -55,7 +59,15 @@ public class ListeActivity extends AppCompatActivity {
         LinearLayoutManager LayoutManager = new LinearLayoutManager(this);
         rec.setLayoutManager(LayoutManager);
 
-        adapter = new Adapter();
+        adapter = new Adapter(this);
         rec.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemClick(Integer pos) {
+
+        Intent i = new Intent(ListeActivity.this,VoteActivity.class);
+        i.putExtra("id", pos);
+        startActivity(i);
     }
 }

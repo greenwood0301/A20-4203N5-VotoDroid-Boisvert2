@@ -1,14 +1,30 @@
 package org.boisvert.Impl;
 
+import android.content.Context;
+import android.widget.Toast;
+
+import org.boisvert.CreateActivity;
+import org.boisvert.DAO.BD;
 import org.boisvert.Exceptions.MauvaisVote;
 import org.boisvert.Exceptions.MauvaiseQuestion;
 import org.boisvert.Interfaces.Service;
+import org.boisvert.ListeActivity;
+import org.boisvert.MainActivity;
 import org.boisvert.Modele.VDQuestion;
 import org.boisvert.Modele.VDVote;
 
 import java.util.*;
 
 public class ServiceImpl  implements Service {
+
+    Context con;
+
+    public ServiceImpl(Context c)
+    {
+        con = c;
+    }
+
+    public ServiceImpl(){};
 
     private List<VDQuestion> ListQuestions = new ArrayList<VDQuestion>();
 
@@ -21,12 +37,12 @@ public class ServiceImpl  implements Service {
         if (question.texte.length()< 5) throw new MauvaiseQuestion();
         if (question.texte.length()>255) throw new MauvaiseQuestion();
         if (question.id != null) throw new MauvaiseQuestion();
-        for (VDQuestion Q:ListQuestions) {
+        for (VDQuestion Q:BD.getInstance(con).dao().ALLQ()) {
             if (question.texte.toUpperCase().equals(Q.texte.toUpperCase())) throw new MauvaiseQuestion();
         }
         if (question.nbVote != null) throw new MauvaiseQuestion();
         //ajouter
-        question.id = ListQuestions.size();
+        question.id = BD.getInstance(con).dao().ALLQ().size();
         ListQuestions.add(question);
     }
 
@@ -39,32 +55,35 @@ public class ServiceImpl  implements Service {
         if (vote.id != null) throw new MauvaisVote();
         if (vote.Qid == null) throw new MauvaisVote();
         int yn = 0;
-        for (int i = 0; i < ListQuestions.size(); i++)
+        for (int i = 0; i < BD.getInstance(con).dao().ALLQ().size(); i++)
         {
-            if (ListQuestions.get(i).id == vote.Qid){yn = 1;}
+            if (BD.getInstance(con).dao().ALLQ().get(i).id == vote.Qid){yn = 1;}
         }
         if (yn == 0) throw new MauvaisVote();
         if (vote.user == null) throw new MauvaisVote();
-        for (VDVote V:ListVotes)
+        for (VDVote V: BD.getInstance(con).dao().ALLV())
         {
-            if (vote.user.toUpperCase() == V.user.toUpperCase()) throw new MauvaisVote();
+            if (vote.user.toUpperCase().equals(V.user.toUpperCase())) throw new MauvaisVote();
         }
         //ajouter
-        vote.id = ListVotes.size();
+        vote.id = BD.getInstance(con).dao().ALLV().size();
         ListVotes.add(vote);
-        for (VDQuestion Q:ListQuestions)
+        for (VDQuestion Q:BD.getInstance(con).dao().ALLQ())
         {
             if (Q.id == vote.Qid)
             {
-                if (Q.nbVote == null){Q.nbVote = 0;}
+                if (Q.nbVote == null)
+                {
+                    Q.nbVote = 0;
+                }
+                Q.nbVote++;
             }
-            Q.nbVote+=1;
         }
     }
 
     public List<VDQuestion> questionsParNombreVotes()
     {
-        List<VDQuestion> ListQuestionsL = ListQuestions;
+        List<VDQuestion> ListQuestionsL = BD.getInstance(con).dao().ALLQ();
 
         Collections.sort(ListQuestionsL, new Comparator<VDQuestion>() {
             @Override
@@ -87,7 +106,7 @@ public class ServiceImpl  implements Service {
         Map.put(4,0);
         Map.put(5,0);
 
-        for (VDVote V:ListVotes)
+        for (VDVote V:BD.getInstance(con).dao().ALLV())
         {
             if (V.Qid == question.id)
             {
@@ -120,7 +139,7 @@ public class ServiceImpl  implements Service {
     {
         double calcul = 0.0;
 
-        for (VDVote V:ListVotes)
+        for (VDVote V:BD.getInstance(con).dao().ALLV())
         {
             if (V.Qid == question.id)
             {
@@ -136,7 +155,7 @@ public class ServiceImpl  implements Service {
         double sum = 0;
         int longueur = 0;
 
-        for (VDVote V:ListVotes)
+        for (VDVote V:BD.getInstance(con).dao().ALLV())
         {
             if (V.Qid == question.id)
             {
@@ -148,7 +167,7 @@ public class ServiceImpl  implements Service {
         double var = sum/longueur;
         double dev = 0;
 
-        for (VDVote V:ListVotes)
+        for (VDVote V:BD.getInstance(con).dao().ALLV())
         {
             if (V.Qid == question.id)
             {

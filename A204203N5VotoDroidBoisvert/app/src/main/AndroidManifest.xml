@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".ListeActivity">
         </activity>
+        <activity android:name=".VoteActivity">
+        </activity>
     </application>
 
 </manifest>

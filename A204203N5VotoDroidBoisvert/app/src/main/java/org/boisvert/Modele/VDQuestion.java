@@ -18,7 +18,7 @@ public class VDQuestion {
     @ColumnInfo
     public Integer nbVote;
 
-    public VDQuestion()
+    /*public VDQuestion()
     {
 
     }
@@ -26,6 +26,6 @@ public class VDQuestion {
     public VDQuestion(Integer id,String texte, Integer nbVote)
     {
 
-    }
+    }*/
 
 }
