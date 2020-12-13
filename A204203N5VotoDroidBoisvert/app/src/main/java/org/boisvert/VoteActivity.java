@@ -54,6 +54,13 @@ public class VoteActivity extends AppCompatActivity
                 startActivity(i);
             }
         });
-
+        binding.Res.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(VoteActivity.this,ResultActivity.class);
+                i.putExtra("id", Id);
+                startActivity(i);
+            }
+        });
     }
 }

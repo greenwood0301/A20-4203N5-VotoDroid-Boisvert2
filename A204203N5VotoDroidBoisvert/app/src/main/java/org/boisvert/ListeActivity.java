@@ -3,6 +3,8 @@ package org.boisvert;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,7 @@ public class ListeActivity extends AppCompatActivity implements Adapter.isClick 
     Adapter adapter;
     BD local;
     private ActivityListeBinding binding;
+    int fix = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +39,7 @@ public class ListeActivity extends AppCompatActivity implements Adapter.isClick 
         binding.pose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ListeActivity.this,CreateActivity.class);
+                Intent i = new Intent(ListeActivity.this, CreateActivity.class);
                 startActivity(i);
             }
         });

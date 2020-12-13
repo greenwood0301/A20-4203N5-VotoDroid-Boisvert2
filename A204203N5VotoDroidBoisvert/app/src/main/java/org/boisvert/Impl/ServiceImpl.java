@@ -67,7 +67,6 @@ public class ServiceImpl  implements Service {
         }
         //ajouter
         vote.id = BD.getInstance(con).dao().ALLV().size();
-        ListVotes.add(vote);
         for (VDQuestion Q:BD.getInstance(con).dao().ALLQ())
         {
             if (Q.id == vote.Qid)
@@ -79,6 +78,7 @@ public class ServiceImpl  implements Service {
                 Q.nbVote++;
             }
         }
+        ListVotes.add(vote);
     }
 
     public List<VDQuestion> questionsParNombreVotes()
@@ -144,6 +144,18 @@ public class ServiceImpl  implements Service {
             if (V.Qid == question.id)
             {
                 calcul = calcul + V.valeur;
+            }
+        }
+
+        for (VDVote V:BD.getInstance(con).dao().ALLV())
+        {
+            if (question.id == V.Qid)
+            {
+                if (question.nbVote == null)
+                {
+                    question.nbVote = 0;
+                }
+                question.nbVote++;
             }
         }
 
