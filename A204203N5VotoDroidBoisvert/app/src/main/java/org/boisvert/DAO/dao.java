@@ -30,4 +30,7 @@ public interface dao {
 
     @Query("SELECT * FROM VDVote")
     List<VDVote> ALLV();
+
+    @Query("DELETE FROM VDQuestion WHERE id = :QuestionId")
+    abstract void deleteById(long QuestionId);
 }

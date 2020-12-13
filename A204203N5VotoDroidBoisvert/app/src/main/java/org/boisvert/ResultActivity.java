@@ -14,6 +14,8 @@ import org.boisvert.Modele.VDQuestion;
 import org.boisvert.databinding.ActivityListeBinding;
 import org.boisvert.databinding.ActivityResultBinding;
 
+import java.util.Map;
+
 public class ResultActivity  extends AppCompatActivity
 {
     private ActivityResultBinding binding;
@@ -30,5 +32,16 @@ public class ResultActivity  extends AppCompatActivity
         double moy = service.moyennePour(q);
         String s=Double.toString(moy);
         binding.Moy.setText(s);
+        double ET = service.ecartTypePour(q);
+        String sET=Double.toString(ET);
+        binding.ET.setText(sET);
+        binding.TitleR.setText(BD.getInstance(this).dao().ALLQ().get(Id).texte);
+        Map<Integer, Integer> Map = service.distributionPour(q);
+        binding.textView6.setText(Map.get(0).toString());
+        binding.textView7.setText(Map.get(1).toString());
+        binding.textView8.setText(Map.get(2).toString());
+        binding.textView9.setText(Map.get(3).toString());
+        binding.textView10.setText(Map.get(4).toString());
+        binding.textView11.setText(Map.get(5).toString());
     }
 }

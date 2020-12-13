@@ -17,6 +17,7 @@ import org.boisvert.Exceptions.MauvaiseQuestion;
 import org.boisvert.Impl.ServiceImpl;
 import org.boisvert.Interfaces.Service;
 import org.boisvert.Modele.VDQuestion;
+import org.boisvert.Modele.VDVote;
 import org.boisvert.databinding.ActivityListeBinding;
 import org.boisvert.databinding.QuestionItemsBinding;
 
@@ -40,6 +41,37 @@ public class ListeActivity extends AppCompatActivity implements Adapter.isClick 
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ListeActivity.this, CreateActivity.class);
+                startActivity(i);
+            }
+        });
+
+        binding.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                local.dao().deleteV();
+
+            }
+        });
+        binding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (VDQuestion q:local.dao().ALLQ())
+                {
+                    q.nbVote = 0;
+                    for (VDVote V:local.dao().ALLV())
+                    {
+                        if (q.id == V.Qid)
+                        {
+                            q.nbVote++;
+                        }
+                    }
+                    if (q.nbVote == 0)
+                    {
+                        local.dao().deleteById(q.id);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+                Intent i = new Intent(ListeActivity.this,ListeActivity.class);
                 startActivity(i);
             }
         });

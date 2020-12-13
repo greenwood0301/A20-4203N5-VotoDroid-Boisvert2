@@ -57,9 +57,18 @@ public class VoteActivity extends AppCompatActivity
         binding.Res.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(VoteActivity.this,ResultActivity.class);
-                i.putExtra("id", Id);
-                startActivity(i);
+                int tempnbvote = 0;
+                for (VDVote V:local.dao().ALLV())
+                {
+                    if (V.Qid == Id){tempnbvote++;}
+                }
+
+                if (tempnbvote != 0)
+                {
+                    Intent i = new Intent(VoteActivity.this,ResultActivity.class);
+                    i.putExtra("id", Id);
+                    startActivity(i);
+                }else{Toast.makeText(getApplicationContext(),"Aucun vote n'est disponible pour cette question. Veuiller réessayer plus tard...", Toast.LENGTH_SHORT).show();}
             }
         });
     }
