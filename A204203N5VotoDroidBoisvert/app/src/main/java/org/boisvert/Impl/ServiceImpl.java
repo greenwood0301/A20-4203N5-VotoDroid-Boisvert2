@@ -63,7 +63,10 @@ public class ServiceImpl  implements Service {
         if (vote.user == null) throw new MauvaisVote();
         for (VDVote V: BD.getInstance(con).dao().ALLV())
         {
-            if (vote.user.toUpperCase().equals(V.user.toUpperCase())) throw new MauvaisVote();
+            if (vote.Qid == V.Qid)
+            {
+                if (vote.user.toUpperCase().equals(V.user.toUpperCase())) throw new MauvaisVote();
+            }
         }
         //ajouter
         vote.id = BD.getInstance(con).dao().ALLV().size();

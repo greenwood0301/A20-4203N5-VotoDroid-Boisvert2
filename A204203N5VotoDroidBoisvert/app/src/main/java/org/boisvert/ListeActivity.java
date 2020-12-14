@@ -2,24 +2,20 @@ package org.boisvert;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Dao;
 
 import org.boisvert.DAO.BD;
-import org.boisvert.Exceptions.MauvaiseQuestion;
-import org.boisvert.Impl.ServiceImpl;
-import org.boisvert.Interfaces.Service;
 import org.boisvert.Modele.VDQuestion;
 import org.boisvert.Modele.VDVote;
 import org.boisvert.databinding.ActivityListeBinding;
-import org.boisvert.databinding.QuestionItemsBinding;
 
 public class ListeActivity extends AppCompatActivity implements Adapter.isClick {
     Adapter adapter;
@@ -44,37 +40,6 @@ public class ListeActivity extends AppCompatActivity implements Adapter.isClick 
                 startActivity(i);
             }
         });
-
-        binding.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                local.dao().deleteV();
-
-            }
-        });
-        binding.button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (VDQuestion q:local.dao().ALLQ())
-                {
-                    q.nbVote = 0;
-                    for (VDVote V:local.dao().ALLV())
-                    {
-                        if (q.id == V.Qid)
-                        {
-                            q.nbVote++;
-                        }
-                    }
-                    if (q.nbVote == 0)
-                    {
-                        local.dao().deleteById(q.id);
-                    }
-                }
-                adapter.notifyDataSetChanged();
-                Intent i = new Intent(ListeActivity.this,ListeActivity.class);
-                startActivity(i);
-            }
-        });
     }
 
     private void FillRecycler()
@@ -94,7 +59,7 @@ public class ListeActivity extends AppCompatActivity implements Adapter.isClick 
         LinearLayoutManager LayoutManager = new LinearLayoutManager(this);
         rec.setLayoutManager(LayoutManager);
 
-        adapter = new Adapter(this);
+        adapter = new Adapter(this, this);
         rec.setAdapter(adapter);
     }
 
@@ -104,5 +69,42 @@ public class ListeActivity extends AppCompatActivity implements Adapter.isClick 
         Intent i = new Intent(ListeActivity.this,VoteActivity.class);
         i.putExtra("id", pos);
         startActivity(i);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.SuppVotes) {
+            local.dao().deleteV();
+            return true;
+        }
+        if (id == R.id.SuppQues) {
+            for (VDQuestion q:local.dao().ALLQ())
+            {
+                q.nbVote = 0;
+                for (VDVote V:local.dao().ALLV())
+                {
+                    if (q.id == V.Qid)
+                    {
+                        q.nbVote++;
+                    }
+                }
+                if (q.nbVote == 0)
+                {
+                    local.dao().deleteById(q.id);
+                }
+            }
+            adapter.notifyDataSetChanged();
+            Intent i = new Intent(ListeActivity.this,ListeActivity.class);
+            startActivity(i);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

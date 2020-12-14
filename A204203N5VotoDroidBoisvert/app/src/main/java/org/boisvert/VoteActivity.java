@@ -49,27 +49,11 @@ public class VoteActivity extends AppCompatActivity
                 }
                 catch (MauvaisVote e)
                 {
-                    Toast.makeText(getApplicationContext(),"Vous pouvez seulement voter une fois par question!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Une erreur est survenu lors du vote. Veuiller vérifier le nom entré et réessayer.", Toast.LENGTH_SHORT).show();
                 }
                 startActivity(i);
             }
         });
-        binding.Res.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int tempnbvote = 0;
-                for (VDVote V:local.dao().ALLV())
-                {
-                    if (V.Qid == Id){tempnbvote++;}
-                }
 
-                if (tempnbvote != 0)
-                {
-                    Intent i = new Intent(VoteActivity.this,ResultActivity.class);
-                    i.putExtra("id", Id);
-                    startActivity(i);
-                }else{Toast.makeText(getApplicationContext(),"Aucun vote n'est disponible pour cette question. Veuiller réessayer plus tard...", Toast.LENGTH_SHORT).show();}
-            }
-        });
     }
 }
